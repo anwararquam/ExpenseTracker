@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,24 +23,11 @@ import java.util.List;
 public class Category implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long category_id;
-    @Column(name = "CategoryName")
+    @Column(name = "category_id")
+    private Long categoryId;
+    @Column(name = "categoryName")
     private String category_name;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false)
-    private Date createdAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "modified_at", nullable = false)
-    private Date ModifiedAt;
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-        ModifiedAt = new Date();
-    }
-    @PreUpdate
-    protected void onUpdate(){
-        ModifiedAt =new Date();
-    }
+
     @OneToOne
     @JoinColumn(name = "expense_id")
     private Expense expense;

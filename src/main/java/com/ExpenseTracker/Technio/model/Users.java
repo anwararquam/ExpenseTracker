@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,9 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "User")
 public class Users implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userid;
     @Column(name = "email")
     private String email;
     @Column(name = "password")
@@ -29,6 +32,7 @@ public class Users implements UserDetails {
     private String username;
     @OneToMany(mappedBy = "user")
     private List<Expense> expenses;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
