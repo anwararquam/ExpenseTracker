@@ -24,11 +24,15 @@ public class SecurityConfig {
     private PasswordEncoder passwordEncoder;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.authorizeHttpRequests(auth->auth.requestMatchers("/resources/**").permitAll())
-                .csrf(csrf->csrf.disable())
+        http.csrf(csrf->csrf.disable())
                 .cors(cors->cors.disable())
-
-                .authorizeHttpRequests(auth->auth.requestMatchers("/home/**").authenticated().requestMatchers("/auth/login").permitAll().requestMatchers("/*").permitAll().requestMatchers("api/v1/users").permitAll().anyRequest().authenticated())
+                .authorizeRequests()
+                .requestMatchers("/home/**").authenticated()
+                .requestMatchers("/auth/login").permitAll()
+                .requestMatchers("auth/create-user").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
                 .exceptionHandling(ex->ex.authenticationEntryPoint(point))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

@@ -18,11 +18,13 @@ public class UserController implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Override
+    @GetMapping
     public List<Users> getAll() {
         return userRepository.findAll();
 
     }
     @Override
+    @GetMapping("{id}")
     public ResponseEntity<Users> getUserById(@PathVariable  Long id) {
         Users user=userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User is not Registered"));
         return ResponseEntity.ok(user);
@@ -30,6 +32,7 @@ public class UserController implements UserService {
 
 
     @Override
+    @PutMapping
     public ResponseEntity<Users> updateUserById(@PathVariable long id,@RequestBody Users userdetails) {
         Users updateduser=userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found with the credentials Provided"));
         updateduser.setEmail(userdetails.getEmail());
@@ -39,6 +42,7 @@ public class UserController implements UserService {
         return ResponseEntity.ok(updateduser);
     }
     @Override
+    @DeleteMapping
     public ResponseEntity<Users> deleteUser(@PathVariable Long id) {
         Users user=userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User Not Found To Delete"));
 
